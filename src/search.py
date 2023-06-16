@@ -1,4 +1,5 @@
 from abc import *
+from search_selenium import *
 
 class TargetSearch(ABC): 
     @abstractmethod
