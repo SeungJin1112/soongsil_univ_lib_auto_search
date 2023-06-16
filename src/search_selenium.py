@@ -1,13 +1,36 @@
-from abc import *
+from chromedriver_autoinstaller import install as install_chromedriver
 
 from selenium import webdriver
-import chromedriver_autoinstaller
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
 
-class TargetSelenium(ABC):
-    @abstractmethod
-    def Serach(): pass
-    def Get(): pass
 
-class AdvancedSelenium(ABC):
-    @abstractmethod
-    def GetInstance(): pass
+class SingletonSelenium:
+    _instance = None
+
+    def __init__(self):
+        if SingletonSelenium._instance != None: 
+            raise Exception("ERROR(CLASS: SingletonSelenium, MSG: instance already exists)")
+        else: 
+            SingletonSelenium._instance = self
+            install_chromedriver()
+
+            chromeOptions = Options()
+            #chromeOptions.add_argument('--headless')
+
+            self.driver = webdriver.Chrome(service=Service(), options=chromeOptions)
+            
+    def GetInstance():
+        if SingletonSelenium._instance == None: SingletonSelenium()
+
+        return SingletonSelenium._instance
+    
+    def ExistsInstance(cls):
+        if SingletonSelenium._instance == None: return False
+        else : return True
+
+    def CloseDriver(self):
+        if self.driver:
+            self.driver.quit()
+            self.driver = None

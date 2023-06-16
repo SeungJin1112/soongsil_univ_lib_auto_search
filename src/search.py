@@ -1,5 +1,7 @@
 from abc import *
 from search_selenium import *
+from login import *
+
 
 class TargetSearch(ABC): 
     @abstractmethod
@@ -13,20 +15,40 @@ class AdvancedEInfoCenterSearch(ABC):
     def SearchNANET(self, searchText): pass 
 
 class SearchEInfoCenterRISS(AdvancedEInfoCenterSearch):
+    def SearchKOCW(self, searchText): pass
+    def SearchNL(self, searchText): pass
+    def SearchNANET(self, searchText): pass 
+
     def SearchRISS(self, searchText):
-        print(f"RISS : {searchText}")
+        seleniumLib = SingletonSelenium.GetInstance()
+        seleniumLib.driver.get("http://www-riss-kr.openlink.ssu.ac.kr/index.do")
 
 class SearchEInfoCenterKOCW(AdvancedEInfoCenterSearch):
+    def SearchRISS(self, searchText): pass
+    def SearchNL(self, searchText): pass
+    def SearchNANET(self, searchText): pass 
+
     def SearchKOCW(self, searchText):
-        print(f"KOCW : {searchText}")
+        seleniumLib = SingletonSelenium.GetInstance()
+        seleniumLib.driver.get("http://www.kocw.net/home/index.do")
 
 class SearchEInfoCenterNL(AdvancedEInfoCenterSearch):
+    def SearchRISS(self, searchText): pass
+    def SearchKOCW(self, searchText): pass
+    def SearchNANET(self, searchText): pass 
+
     def SearchNL(self, searchText):
-        print(f"NL : {searchText}")
+        seleniumLib = SingletonSelenium.GetInstance()
+        seleniumLib.driver.get("https://www.nl.go.kr/")
 
 class SearchEInfoCenterNANET(AdvancedEInfoCenterSearch):
+    def SearchRISS(self, searchText): pass
+    def SearchKOCW(self, searchText): pass
+    def SearchNL(self, searchText): pass 
+
     def SearchNANET(self, searchText):
-        print(f"NANET : {searchText}")
+        seleniumLib = SingletonSelenium.GetInstance()
+        seleniumLib.driver.get("https://www.nanet.go.kr/main.do")
 
 class AdapterSearch(TargetSearch):
     def __init__(self, eInfoCenter):
