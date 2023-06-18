@@ -3,10 +3,10 @@ from search import *
 
 
 if __name__ == "__main__":
-    loginLib = SingletonLogin.GetInstance()
+    loginInstance = SingletonLogin.GetInstance("input id", "input pw")
     searchEInfoCenter = None
 
-    if loginLib.ExistsInstance() == True: 
+    if loginInstance.ExistsInstance() == True: 
         searchEInfoCenter = TargetImpl()
         searchEInfoCenter.Serach("RISS", "test")
         searchEInfoCenter.Serach("KOCW", "test")

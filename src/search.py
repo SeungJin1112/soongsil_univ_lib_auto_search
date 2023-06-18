@@ -1,7 +1,11 @@
+import time
+
 from abc import *
 from search_selenium import *
 from login import *
 
+
+g_oasis = None
 
 class TargetSearch(ABC): 
     @abstractmethod
@@ -20,8 +24,15 @@ class SearchEInfoCenterRISS(AdvancedEInfoCenterSearch):
     def SearchNANET(self, searchText): pass 
 
     def SearchRISS(self, searchText):
-        seleniumLib = SingletonSelenium.GetInstance()
-        seleniumLib.driver.get("http://www-riss-kr.openlink.ssu.ac.kr/index.do")
+        seleniumInstance = SingletonSelenium.GetInstance()
+
+        seleniumInstance.m_driver.find_element('xpath', '//a[@title="RISS"]').click()
+        time.sleep(10) 
+
+        seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
+        seleniumInstance.m_driver.find_element('id', 'query').send_keys(searchText)
+        seleniumInstance.m_driver.find_element('css selector', '.btnSearch').click()
+        time.sleep(3)
 
 class SearchEInfoCenterKOCW(AdvancedEInfoCenterSearch):
     def SearchRISS(self, searchText): pass
@@ -29,8 +40,15 @@ class SearchEInfoCenterKOCW(AdvancedEInfoCenterSearch):
     def SearchNANET(self, searchText): pass 
 
     def SearchKOCW(self, searchText):
-        seleniumLib = SingletonSelenium.GetInstance()
-        seleniumLib.driver.get("http://www.kocw.net/home/index.do")
+        seleniumInstance = SingletonSelenium.GetInstance()
+
+        seleniumInstance.m_driver.find_element('xpath', '//a[@title="KOCW"]').click()
+        time.sleep(10) 
+
+        seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
+        seleniumInstance.m_driver.find_element('id', 'query').send_keys(searchText)
+        seleniumInstance.m_driver.find_element('css selector', '.searchBtn').click()
+        time.sleep(3)
 
 class SearchEInfoCenterNL(AdvancedEInfoCenterSearch):
     def SearchRISS(self, searchText): pass
@@ -38,8 +56,15 @@ class SearchEInfoCenterNL(AdvancedEInfoCenterSearch):
     def SearchNANET(self, searchText): pass 
 
     def SearchNL(self, searchText):
-        seleniumLib = SingletonSelenium.GetInstance()
-        seleniumLib.driver.get("https://www.nl.go.kr/")
+        seleniumInstance = SingletonSelenium.GetInstance()
+
+        seleniumInstance.m_driver.find_element('xpath', '//a[@title="국립중앙도서관"]').click()
+        time.sleep(10) 
+
+        seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
+        seleniumInstance.m_driver.find_element('id', 'main_input-text1').send_keys(searchText)
+        seleniumInstance.m_driver.find_element('css selector', '.btn-search').click()
+        time.sleep(3)
 
 class SearchEInfoCenterNANET(AdvancedEInfoCenterSearch):
     def SearchRISS(self, searchText): pass
@@ -47,11 +72,36 @@ class SearchEInfoCenterNANET(AdvancedEInfoCenterSearch):
     def SearchNL(self, searchText): pass 
 
     def SearchNANET(self, searchText):
-        seleniumLib = SingletonSelenium.GetInstance()
-        seleniumLib.driver.get("https://www.nanet.go.kr/main.do")
+        seleniumInstance = SingletonSelenium.GetInstance()
+
+        seleniumInstance.m_driver.find_element('xpath', '//a[@title="국회도서관"]').click()
+        time.sleep(10) 
+
+        seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
 
 class AdapterSearch(TargetSearch):
     def __init__(self, eInfoCenter):
+        global g_oasis
+
+        loginInstance = SingletonLogin.GetInstance()
+        seleniumInstance = SingletonSelenium.GetInstance()
+
+        if loginInstance.ExistsInstance() != True \
+            and seleniumInstance.ExistsInstance() != True : return
+        
+        if g_oasis == None:
+            seleniumInstance.m_driver.get("https://oasis.ssu.ac.kr/")
+            
+            seleniumInstance.m_driver.find_element('id', 'goto-login').click()
+            seleniumInstance.m_driver.find_element('id', 'userid').send_keys(loginInstance.m_id)
+            seleniumInstance.m_driver.find_element('id', 'password').send_keys(loginInstance.m_pw)
+            seleniumInstance.m_driver.find_element('css selector', '.btn-block[type="submit"]').click()
+
+            g_oasis = seleniumInstance.m_driver.current_window_handle
+
+        seleniumInstance.m_driver.switch_to.window(g_oasis)
+        time.sleep(3)
+
         if eInfoCenter == "RISS": self.advancedEInfoCenter = SearchEInfoCenterRISS()
         elif eInfoCenter == "KOCW": self.advancedEInfoCenter = SearchEInfoCenterKOCW()
         elif eInfoCenter == "NL": self.advancedEInfoCenter = SearchEInfoCenterNL()

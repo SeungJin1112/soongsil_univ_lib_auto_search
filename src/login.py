@@ -1,13 +1,18 @@
 class SingletonLogin:
     _instance = None
 
-    def __init__(self):
+    def __init__(self, id, pw):
         if SingletonLogin._instance != None: 
             raise Exception("ERROR(CLASS: SingletonLogin, MSG: instance already exists)")
-        else: SingletonLogin._instance = self
+        
+        SingletonLogin._instance = self
+        self.m_id = id
+        self.m_pw = pw
 
-    def GetInstance():
-        if SingletonLogin._instance == None: SingletonLogin()
+    def GetInstance(id=None, pw=None):
+        if id != None and pw != None: 
+            if SingletonLogin._instance == None: 
+                SingletonLogin(id, pw)
 
         return SingletonLogin._instance
     
