@@ -27,7 +27,15 @@ class SearchEInfoCenterRISS(AdvancedEInfoCenterSearch):
         seleniumInstance = SingletonSelenium.GetInstance()
 
         seleniumInstance.m_driver.find_element('xpath', '//a[@title="RISS"]').click()
+        #seleniumInstance.m_driver.get("http://www-riss-kr.openlink.ssu.ac.kr/index.do")
         time.sleep(10) 
+
+        for handle in seleniumInstance.m_driver.window_handles:
+            seleniumInstance.m_driver.switch_to.window(handle)
+            if handle != seleniumInstance.m_driver.window_handles[0] \
+                and seleniumInstance.m_driver.current_url != "http://www-riss-kr.openlink.ssu.ac.kr/index.do":
+                    seleniumInstance.m_driver.switch_to.window(handle)
+                    seleniumInstance.m_driver.close()
 
         seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
         seleniumInstance.m_driver.find_element('id', 'query').send_keys(searchText)
@@ -43,7 +51,15 @@ class SearchEInfoCenterKOCW(AdvancedEInfoCenterSearch):
         seleniumInstance = SingletonSelenium.GetInstance()
 
         seleniumInstance.m_driver.find_element('xpath', '//a[@title="KOCW"]').click()
+        #seleniumInstance.m_driver.get("http://www.kocw.net/home/index.do")
         time.sleep(10) 
+
+        for handle in seleniumInstance.m_driver.window_handles:
+            seleniumInstance.m_driver.switch_to.window(handle)
+            if handle != seleniumInstance.m_driver.window_handles[0] \
+                and seleniumInstance.m_driver.current_url != "http://www.kocw.net/home/index.do":
+                    seleniumInstance.m_driver.switch_to.window(handle)
+                    seleniumInstance.m_driver.close()    
 
         seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
         seleniumInstance.m_driver.find_element('id', 'query').send_keys(searchText)
@@ -59,6 +75,7 @@ class SearchEInfoCenterNL(AdvancedEInfoCenterSearch):
         seleniumInstance = SingletonSelenium.GetInstance()
 
         seleniumInstance.m_driver.find_element('xpath', '//a[@title="국립중앙도서관"]').click()
+        #seleniumInstance.m_driver.get("https://www.nl.go.kr")
         time.sleep(10) 
 
         seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
@@ -75,6 +92,7 @@ class SearchEInfoCenterNANET(AdvancedEInfoCenterSearch):
         seleniumInstance = SingletonSelenium.GetInstance()
 
         seleniumInstance.m_driver.find_element('xpath', '//a[@title="국회도서관"]').click()
+        #seleniumInstance.m_driver.get("https://www.nanet.go.kr/main.do")
         time.sleep(10) 
 
         seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
