@@ -3,6 +3,7 @@ import time
 from abc import *
 from search_selenium import *
 from login import *
+from crawling import *
 
 
 g_oasis = None
@@ -10,6 +11,7 @@ g_oasis = None
 class TargetSearch(ABC): 
     @abstractmethod
     def Search(self, eInfoCenter, searchText): pass
+    # def Crawling(self, eInfoCenter, searchText): pass
 
 class AdvancedEInfoCenterSearch(ABC):
     @abstractmethod
