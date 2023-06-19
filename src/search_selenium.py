@@ -17,7 +17,7 @@ class SingletonSelenium:
         install_chromedriver()
 
         self.m_chromeOptions = Options()
-        #chromeOptions.add_argument('--headless')
+        #self.m_chromeOptions.add_argument('--headless')
 
         self.m_driver = webdriver.Chrome(service=Service(), options=self.m_chromeOptions)
             
@@ -25,7 +25,6 @@ class SingletonSelenium:
         if SingletonSelenium._instance == None: SingletonSelenium()
 
         return SingletonSelenium._instance
-    
     
     def ExistsInstance(cls):
         if SingletonSelenium._instance == None: return False

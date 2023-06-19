@@ -1,5 +1,6 @@
 from abc import *
 
+
 class TargetCrawling(ABC): 
     @abstractmethod
     def Crawling(self, eInfoCenter, crawlingText): pass
@@ -42,17 +43,15 @@ class AdapterCrawling(TargetCrawling):
         elif eInfoCenter == "NL": self.advancedEInfoCenter = CrawlingEInfoCenterNL()
         elif eInfoCenter == "NANET": self.advancedEInfoCenter = CrawlingEInfoCenterNANET()
 
-    def Search(self, eInfoCenter, crawlingText):
+    def Crawling(self, eInfoCenter, crawlingText):
         if eInfoCenter == "RISS": self.advancedEInfoCenter.CrawlingRISS(crawlingText)
         elif eInfoCenter == "KOCW": self.advancedEInfoCenter.CrawlingKOCW(crawlingText)
         elif eInfoCenter == "NL": self.advancedEInfoCenter.CrawlingNL(crawlingText)
         elif eInfoCenter == "NANET": self.advancedEInfoCenter.CrawlingNANET(crawlingText)
 
-    def Crawling(self, eInfoCenter, crawlingText): pass
-
-class TargetImpl(TargetCrawling):
+class TargetCrawlingImpl(TargetCrawling):
     def __init__(self): self.adapter = None
     
-    def Search(self, eInfoCenter, crawlingText):
+    def Crawling(self, eInfoCenter, crawlingText):
         self.adapter = AdapterCrawling(eInfoCenter)
         self.adapter.Crawling(eInfoCenter, crawlingText)

@@ -3,7 +3,6 @@ import time
 from abc import *
 from search_selenium import *
 from login import *
-from crawling import *
 
 
 g_oasis = None
@@ -11,7 +10,6 @@ g_oasis = None
 class TargetSearch(ABC): 
     @abstractmethod
     def Search(self, eInfoCenter, searchText): pass
-    # def Crawling(self, eInfoCenter, searchText): pass
 
 class AdvancedEInfoCenterSearch(ABC):
     @abstractmethod
@@ -80,6 +78,9 @@ class SearchEInfoCenterNANET(AdvancedEInfoCenterSearch):
         time.sleep(10) 
 
         seleniumInstance.m_driver.switch_to.window(seleniumInstance.m_driver.window_handles[-1])
+        seleniumInstance.m_driver.find_element('id', 'query').send_keys(searchText)
+        seleniumInstance.m_driver.find_element('id', 'elecSearch').send_keys(searchText)
+        time.sleep(3)
 
 class AdapterSearch(TargetSearch):
     def __init__(self, eInfoCenter):
@@ -115,7 +116,7 @@ class AdapterSearch(TargetSearch):
         elif eInfoCenter == "NL": self.advancedEInfoCenter.SearchNL(searchText)
         elif eInfoCenter == "NANET": self.advancedEInfoCenter.SearchNANET(searchText)
 
-class TargetImpl(TargetSearch):
+class TargetSearchImpl(TargetSearch):
     def __init__(self): self.adapter = None
     
     def Search(self, eInfoCenter, searchText):
