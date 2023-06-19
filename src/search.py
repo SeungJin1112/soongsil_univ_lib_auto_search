@@ -9,7 +9,7 @@ g_oasis = None
 
 class TargetSearch(ABC): 
     @abstractmethod
-    def Serach(self, eInfoCenter, searchText): pass
+    def Search(self, eInfoCenter, searchText): pass
 
 class AdvancedEInfoCenterSearch(ABC):
     @abstractmethod
@@ -107,7 +107,7 @@ class AdapterSearch(TargetSearch):
         elif eInfoCenter == "NL": self.advancedEInfoCenter = SearchEInfoCenterNL()
         elif eInfoCenter == "NANET": self.advancedEInfoCenter = SearchEInfoCenterNANET()
 
-    def Serach(self, eInfoCenter, searchText):
+    def Search(self, eInfoCenter, searchText):
         if eInfoCenter == "RISS": self.advancedEInfoCenter.SearchRISS(searchText)
         elif eInfoCenter == "KOCW": self.advancedEInfoCenter.SearchKOCW(searchText)
         elif eInfoCenter == "NL": self.advancedEInfoCenter.SearchNL(searchText)
@@ -116,9 +116,9 @@ class AdapterSearch(TargetSearch):
 class TargetImpl(TargetSearch):
     def __init__(self): self.adapter = None
     
-    def Serach(self, eInfoCenter, searchText):
+    def Search(self, eInfoCenter, searchText):
         self.adapter = AdapterSearch(eInfoCenter)
-        self.adapter.Serach(eInfoCenter, searchText)
+        self.adapter.Search(eInfoCenter, searchText)
     
 
 
