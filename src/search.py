@@ -5,6 +5,11 @@ from search_selenium import *
 from login import *
 
 
+# 0000 0001 : RISS
+# 0000 0010 : KOCW
+# 0000 0100 : NL
+# 0000 1000 : NANET
+
 g_oasis = None
 
 class TargetSearch(ABC): 
