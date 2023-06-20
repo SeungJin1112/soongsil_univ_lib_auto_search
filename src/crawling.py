@@ -1,3 +1,5 @@
+import time
+
 from abc import *
 from search_selenium import *
 
@@ -31,6 +33,21 @@ class CrawlingEInfoCenterRISS(AdvancedEInfoCenterCrawling):
         seleniumInstance = SingletonSelenium.GetInstance()
 
         if seleniumInstance.m_driver.window_handles[0] == None: return 
+
+        pages = seleniumInstance.m_driver.find_elements('xpath', "//img[@alt='더보기']")
+
+        for page in pages:
+            page.click()
+            time.sleep(3)
+
+            links = seleniumInstance.m_driver.find_elements(By.CSS_SELECTOR, '.srchResultListW p.title a')
+
+            for link in links:
+                text = link.text
+                print(text)
+
+            seleniumInstance.m_driver.back()
+            time.sleep(3)
         
 class CrawlingEInfoCenterKOCW(AdvancedEInfoCenterCrawling):
     def CrawlingRISS(self, crawlingText): pass
